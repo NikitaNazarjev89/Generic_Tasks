@@ -1,12 +1,31 @@
 package org.example;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
+
 import java.util.function.Function;
 
+@ExtendWith(MockitoExtension.class)
+
 public class MyListTest {
+
+  @Mock
+  MyList mockLst;
+  @Test
+  public void test_mockito(){
+    MyList<Integer> lst = Mockito.mock(MyList.class);
+
+    //Mockito.when(lst.get(0)).thenReturn(10);
+    Mockito.doThrow(IndexOutOfBoundsException.class).when(lst).get(0);
+    Assertions.assertThrows(IndexOutOfBoundsException.class,()->lst.get(0));
+  }
+
   @Test
   public void test_for_out_index() {
     MyList<Integer> lst = new MyList<>();
@@ -58,7 +77,8 @@ public class MyListTest {
 
     lst2.add(22.4);
     lst2.add(33.4);
-    lst2.add(44.72);
+    lst2.add(44.72);//44.72
+
     Assertions.assertEquals(lst1.hashCode(),lst2.hashCode());
   }
 
@@ -71,9 +91,11 @@ public class MyListTest {
     lst1.add(12.3);
     lst1.add(124.67);
     lst1.add(12123.3234);
+
     lst2.add(12.3);
     lst2.add(124.67);
     lst2.add(12123.3234);
+
     lst3.add(12.3F);
     lst3.add(124.67F);
     lst3.add(12123.3234F);
@@ -122,5 +144,16 @@ public class MyListTest {
     Assertions.assertEquals(expected,copy.toString());
   }
 
+  @Test
+  @Order(1)
+  public void testSame(){
+    MyList<Integer> lst1 = new MyList<>();
+    lst1.add(1);
+    lst1.add(2);
+    lst1.add(3);
+    MyList<Integer> lst2 = lst1;
 
+    Assertions.assertSame(lst1,lst2);
+    Assertions.assertEquals(lst1,lst2);
+  }
 }

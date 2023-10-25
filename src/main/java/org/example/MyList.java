@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 public class MyList<T extends Number> implements Iterable<T>{
 
-  private final int START_LEN = 4;
+  private final int START_LEN = 15;
   public Object[] objArray = new Object[START_LEN];
 
   private int lastIndex;
@@ -33,6 +33,7 @@ public class MyList<T extends Number> implements Iterable<T>{
     int result = lastIndex;
     if(result>0){
       for(Object d : objArray){
+        if(d == null) continue;
         if(d instanceof Double){
           int current = (int)((Double) d * 31);
           result+=current;
